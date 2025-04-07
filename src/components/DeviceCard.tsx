@@ -37,19 +37,34 @@ const DeviceCard = ({
     }
   };
 
+  // Animation styles based on device state
+  const iconAnimation = title.toLowerCase() === 'fan' && isOn
+    ? 'animate-spin-slow'
+    : title.toLowerCase() === 'light' && isOn
+    ? 'animate-pulse-glow'
+    : '';
+  
+  // Calculate glow intensity for light
+  const glowIntensity = title.toLowerCase() === 'light' && isOn 
+    ? `drop-shadow(0 0 ${value[0] / 10}px hsl(var(--smart-orange)))`
+    : '';
+
   return (
     <div className={cn("device-card", className)}>
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center">
-          <div className={`rounded-full p-2 ${color} mr-3`}>
-            <Icon className="h-5 w-5 text-white" strokeWidth={2} />
+          <div 
+            className={`rounded-full p-2 ${color} mr-3 transition-all duration-300`}
+            style={{ filter: glowIntensity }}
+          >
+            <Icon className={cn("h-5 w-5 text-white transition-all", iconAnimation)} strokeWidth={2} />
           </div>
           <h3 className="font-medium">{title}</h3>
         </div>
         <button
           onClick={toggleDevice}
           className={cn(
-            "px-3 py-1 rounded-full text-xs font-medium",
+            "px-3 py-1 rounded-full text-xs font-medium transition-colors duration-300",
             isOn ? `${color} text-white` : "bg-gray-200 text-gray-500"
           )}
         >
