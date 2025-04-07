@@ -4,7 +4,7 @@ import SmartHomeDashboard from '@/components/SmartHomeDashboard';
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-background to-muted/50 transition-colors duration-300">
       <SmartHomeDashboard />
     </div>
   );

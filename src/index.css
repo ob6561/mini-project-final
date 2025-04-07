@@ -34,6 +34,12 @@
     --ring: 222 47% 11%;
 
     --radius: 0.75rem;
+
+    --smart-green: 142 72% 29%;
+    --smart-blue: 199 89% 48%;
+    --smart-orange: 25 95% 53%;
+    --smart-purple: 262 83% 62%;
+    --smart-teal: 172 66% 40%;
   }
 
   .dark {
@@ -64,6 +70,12 @@
     --border: 217 33% 17%;
     --input: 217 33% 17%;
     --ring: 213 27% 84%;
+
+    --smart-green: 142 50% 45%;
+    --smart-blue: 199 70% 55%;
+    --smart-orange: 25 90% 60%;
+    --smart-purple: 262 75% 70%;
+    --smart-teal: 172 60% 50%;
   }
 }
 
@@ -79,14 +91,42 @@
 
 .sensor-card {
   @apply rounded-xl p-4 transition-all hover:shadow-md;
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(var(--card-rgb), 0.85);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(var(--card-rgb), 0.3);
 }
 
 .device-card {
   @apply rounded-xl p-5 transition-all hover:shadow-md;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(var(--card-rgb), 0.9);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(var(--card-rgb), 0.2);
+}
+
+:root {
+  --card-rgb: 255, 255, 255;
+}
+
+.dark {
+  --card-rgb: 34, 34, 34;
+}
+
+.bg-smart-green {
+  background-color: hsl(var(--smart-green));
+}
+
+.bg-smart-blue {
+  background-color: hsl(var(--smart-blue));
+}
+
+.bg-smart-orange {
+  background-color: hsl(var(--smart-orange));
+}
+
+.bg-smart-purple {
+  background-color: hsl(var(--smart-purple));
+}
+
+.bg-smart-teal {
+  background-color: hsl(var(--smart-teal));
 }

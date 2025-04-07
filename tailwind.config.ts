@@ -54,11 +54,11 @@ export default {
 					foreground: 'hsl(var(--card-foreground))'
 				},
 				smart: {
-					blue: "#0EA5E9",
-					teal: "#14B8A6",
-					green: "#10B981",
-					orange: "#F97316",
-					purple: "#8B5CF6",
+					blue: "hsl(var(--smart-blue))",
+					teal: "hsl(var(--smart-teal))",
+					green: "hsl(var(--smart-green))",
+					orange: "hsl(var(--smart-orange))",
+					purple: "hsl(var(--smart-purple))",
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
