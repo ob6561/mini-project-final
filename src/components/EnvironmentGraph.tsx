@@ -4,6 +4,7 @@ import { LucideIcon } from 'lucide-react';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from './ui/chart';
 import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { cn } from '@/lib/utils';
+import { useWebSocket } from '@/contexts/WebSocketContext';
 
 // Generate mock data for the charts
 const generateData = (baseline: number, variation: number, dataPoints = 24) => {
@@ -26,23 +27,42 @@ interface EnvironmentGraphProps {
   className?: string;
   baseline?: number;
   variation?: number;
+  dataKey: 'temp' | 'humidity' | 'co2_ppm';
 }
 
 const EnvironmentGraph = ({
   title,
-  value,
   unit,
   icon: Icon,
   color,
   className,
   baseline = 50,
   variation = 10,
+  dataKey,
 }: EnvironmentGraphProps) => {
-  const data = React.useMemo(() => generateData(Number(baseline), variation), [baseline, variation]);
+  // Get real-time data from WebSocket context
+  const { sensorData, isConnected } = useWebSocket();
+  const value = sensorData[dataKey];
+  
+  // Use the real value from sensorData as the baseline for mock data
+  const data = React.useMemo(() => generateData(Number(value), variation), [value, variation]);
   const colorValue = color.replace('bg-', '');
 
+  // Add current value to the chart data
+  const chartData = React.useMemo(() => {
+    const newData = [...data];
+    newData.push({
+      hour: 'now',
+      value: Number(value)
+    });
+    return newData;
+  }, [data, value]);
+
   return (
-    <div className={cn("sensor-card flex flex-col", className)}>
+    <div className={cn("sensor-card flex flex-col relative", className)}>
+      {/* Connection indicator */}
+      <div className={`absolute top-2 right-2 h-2 w-2 rounded-full ${isConnected ? 'bg-green-500' : 'bg-red-500'}`}></div>
+      
       <div className="flex items-center mb-2">
         <div className={`rounded-full p-2 mr-2 ${color}`}>
           <Icon className="h-4 w-4 text-white" strokeWidth={2} />
@@ -67,7 +87,7 @@ const EnvironmentGraph = ({
             }
           }}
         >
-          <AreaChart data={data} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
+          <AreaChart data={chartData} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
             <defs>
               <linearGradient id={`color${title}`} x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor={`hsl(var(--${colorValue}))`} stopOpacity={0.8}/>

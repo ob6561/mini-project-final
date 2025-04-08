@@ -17,12 +17,14 @@ const RoomSection = ({ roomName }: RoomSectionProps) => {
           icon={Lightbulb}
           color="bg-smart-orange"
           sliderLabel="Brightness"
+          deviceId="led"
         />
         <DeviceCard
           title="Fan"
           icon={Fan}
           color="bg-smart-blue"
           sliderLabel="Speed"
+          deviceId="fan"
         />
       </div>
     </div>

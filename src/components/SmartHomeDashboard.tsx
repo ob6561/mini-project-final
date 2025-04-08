@@ -5,9 +5,11 @@ import EnvironmentGraph from './EnvironmentGraph';
 import RoomSection from './RoomSection';
 import { ThemeToggle } from './ThemeProvider';
 import { useTheme } from './ThemeProvider';
+import { useWebSocket } from '@/contexts/WebSocketContext';
 
 const SmartHomeDashboard = () => {
   const { theme } = useTheme();
+  const { isConnected } = useWebSocket();
   const [scrollY, setScrollY] = useState(0);
 
   // Update scroll position for background parallax effect
@@ -33,7 +35,7 @@ const SmartHomeDashboard = () => {
         )`
       }}
     >
-      <header className="mb-8 flex justify-between items-center">
+      <header className="mb-6 flex justify-between items-center">
         <div className="w-8" /> {/* Empty div for spacing */}
         <h1 className="text-2xl md:text-3xl font-bold text-center flex items-center justify-center gap-2">
           <Home className={`h-7 w-7 ${theme === 'dark' ? 'text-smart-blue' : 'text-smart-teal'}`} />
@@ -45,7 +47,13 @@ const SmartHomeDashboard = () => {
         <ThemeToggle />
       </header>
 
-      <p className="text-center text-muted-foreground mb-8">Monitor and control your home environment</p>
+      {/* Connection status indicator */}
+      <div className="flex items-center justify-center mb-5 text-sm">
+        <div className={`h-2 w-2 rounded-full mr-2 ${isConnected ? 'bg-green-500' : 'bg-red-500'}`}></div>
+        <span className={isConnected ? 'text-green-500' : 'text-red-500'}>
+          {isConnected ? 'Connected to ESP' : 'Disconnected'}
+        </span>
+      </div>
 
       <section>
         <h2 className="text-xl font-semibold mb-4">Environment</h2>
@@ -58,6 +66,7 @@ const SmartHomeDashboard = () => {
             color="bg-smart-green"
             baseline={25}
             variation={15}
+            dataKey="co2_ppm"
           />
           <EnvironmentGraph
             title="Temperature"
@@ -67,6 +76,7 @@ const SmartHomeDashboard = () => {
             color="bg-smart-orange"
             baseline={23.5}
             variation={5}
+            dataKey="temp"
           />
           <EnvironmentGraph
             title="Humidity"
@@ -76,6 +86,7 @@ const SmartHomeDashboard = () => {
             color="bg-smart-blue"
             baseline={45}
             variation={10}
+            dataKey="humidity"
           />
         </div>
       </section>
